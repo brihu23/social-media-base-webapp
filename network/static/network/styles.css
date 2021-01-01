@@ -1,0 +1,32 @@
+textarea {
+	
+	border-radius: 5px;
+	border: 1px solid black;
+	
+	}
+.full {
+	width: 100%
+}
+.posts {
+  border-radius: 10px;
+
+  border: 2px solid navy
+	
+}
+
+p.small {
+  
+  font-style: italic;
+  font-size: 10px
+
+
+}
+
+
+
+p.thick
+ {
+ 	line-height: 0.1px;
+ 	font-weight: bold;
+ 	
+ }

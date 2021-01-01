@@ -1,0 +1,196 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+
+	<div class = "row" id = 'title'>
+		{% if title %}
+		<h4> {{ title }} </h4>
+		{% endif %}
+	</div>
+
+
+	{% if user.is_authenticated %}
+
+	{% if allposts %}
+
+	<div class = "row posts">	
+		<form action="{% url 'new_post' %}" method="post">
+			{% csrf_token %}
+			<h5> new post</h5>
+			<div class = "col-12">
+			<textarea  class = "form-control" name = "post" id = "npcontent" placeholder="What's on your mind?" rows = 5  required="required"></textarea>
+			<button id ="post" class="btn btn-primary"> Post! </button>
+			</div>
+		</form>	
+	</div>
+	<hr>
+
+	{% endif %}
+
+	{% endif %}
+
+	{% if allposts %}
+	
+
+			{% for post, likes in posts %}
+			<div class = "row posts mb-2 px-4 py-2" >
+				<p class="thick"> <a class = "thick" href="/all_post/1/2/{{ post.author.id }}">{{ post.author.username }} </a></p>
+				<p class = "small">{{ post.timestamp }} </p>
+				<hr>
+				<p class = "content" data-number = "{{ post.id }}" >{{ post.content }}</p>
+				<hr>
+				<p> <span>  {{ likes.0 }} </span>
+					{% if likes.1 %}
+
+					<button  data-number = "{{ post.id }}" style = "background-color: lightblue;" class = 'likes btn'>  &#128077; </button> 
+
+					{% else %}
+
+					<button  data-number = "{{ post.id }}" style = "background-color: lightgrey; "class = 'likes btn'>  &#128077; </button> 
+
+					{% endif %}
+			
+
+			
+
+					{% if user.username == post.author.username %}
+						<button class = "btn btn-primary edit"> edit </button>
+					{% else %}
+						
+					{% endif %}
+				</p>				
+			</div>
+			{% endfor %}
+
+
+	{% endif %}
+
+	{% if user.is_authenticated %}
+
+		{% if followingposts %}
+			<h4> Posts of who you follow </h4>
+
+			{% for post, likes in posts %}
+			<div class = "row posts mb-2 px-4 py-2" >
+				<p class="thick"> <a class = "thick" href="/all_post/1/2/{{ post.author.id }}">{{ post.author.username }} </a></p>
+				<p class = "small">{{ post.timestamp }} </p>
+				<hr>
+				<p class = "content">{{ post.content }}</p>
+				<hr>
+				<p> <span>  {{ likes.0 }} </span>
+					{% if likes.1 %}
+
+					<button  data-number = "{{ post.id }}" style = "background-color: lightblue;" class = 'likes btn'>  &#128077; </button> 
+
+					{% else %}
+
+					<button data-number = "{{ post.id }}" style = "background-color: lightgrey; "class = 'likes btn'>  &#128077; </button> 
+
+					{% endif %}
+				</p>				
+			</div>
+			{% endfor %}
+
+		{% endif %}
+
+	{% endif %}
+
+	{% if profile %}
+	
+
+		{% if same %}
+
+		<h4> Your Profile Page </h4>
+
+		{% else %}
+
+		<h4> {{ profname.username }}'s Profile Page </h4>
+
+		{% if user.is_authenticated %}
+
+			{% if following %}
+			<button id = "followbtn" data-number = "{{ profname.id }}" class = 'following btn btn-primary'> Un-Follow </button> 
+
+			{% else %}
+
+			<button id = "followbtn" data-number = "{{ profname.id }}" class = 'following btn btn-primary'> Follow </button> 
+			{% endif %}
+			
+			{% endif %}
+		{% endif %}
+
+		<h5> <span id = "numfollow"> Followers: {{ numfollowers }} </span>  &nbsp;&nbsp;&nbsp; Following: {{ numfollowing }}</h5>
+	
+		<hr>
+
+
+		<h4> Posts: </h4>
+
+
+
+		{% for post, likes in posts %}
+		<div class = "posts mb-2 px-4 py-2">
+		<p class = "small">{{ post.timestamp }} </p>
+		
+				<p>{{ post.content }}</p>
+				
+				<p class="small"> &#128077; {{ likes.0 }} </p>
+		</div>
+		{% endfor %}
+	
+
+	<div class = "row follow">
+		<p> <span id = "followers"> </span> <span id = "following"> </span> </p>
+	</div>
+
+	{% endif %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+
+  	{% if previous_page < 1 %}
+    	<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    {% else %}
+   	 <li class="page-item"><a class="page-link" href="/all_post/{{ previous_page }}/{{ type }}/0">Previous</a></li>
+   	{% endif %}
+
+
+    {% for number in rnum_pages %}
+	    {% if number == current_page_num %}
+	    	<li class="page-item active"><a class="page-link" href="/all_post/{{ number }}/{{ type }}/0">{{ number }}</a></li>
+	    {% else %}
+	    	<li class="page-item"><a class="page-link" href="/all_post/{{ number }}/{{ type }}/0">{{ number }}</a></li>
+	    {% endif %}
+    {% endfor %}
+
+    {% if next_page > num_pages %}
+    	<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+    {% else %}
+   	 <li class="page-item"><a class="page-link" href="/all_post/{{ next_page }}/{{ type }}/0">Next</a></li>
+   	{% endif %}
+    
+  </ul>
+</nav>
+
+
+<span id= "token" data-token = "{{ csrf_token }}"> </span>
+
+
+
+
+
+
+
+    
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'network/posts.js' %}"></script>
+	<link rel="stylesheet"  href="{% static 'network/styles.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{% endblock %} 
