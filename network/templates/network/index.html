@@ -18,12 +18,20 @@
 	{% if allposts %}
 
 	<div class = "row posts">	
-		<form action="{% url 'new_post' %}" method="post">
-			{% csrf_token %}
-			<h5> new post</h5>
-			<div class = "col-12">
-			<textarea  class = "form-control" name = "post" id = "npcontent" placeholder="What's on your mind?" rows = 5  required="required"></textarea>
-			<button id ="post" class="btn btn-primary"> Post! </button>
+		<form class = "col-12" action="{% url 'new_post' %}" method="post">
+			{% csrf_token %}			
+			<div class = "row pl-3 py-1">
+				<div class = "col-2 text-left py-4">
+					<h5> write a new post!</h5>
+					<button id ="post" class="btn btn-primary"> Post! </button>
+				</div>
+				<div class = "input-group col">
+					<textarea style = "width:100%;" class = "form-control" name = "post" id = "npcontent" placeholder="What's on your mind?" rows = 5  required="required"></textarea>
+					
+				</div>
+
+	
+
 			</div>
 		</form>	
 	</div>
@@ -38,31 +46,32 @@
 
 			{% for post, likes in posts %}
 			<div class = "row posts mb-2 px-4 py-2" >
-				<p class="thick"> <a class = "thick" href="/all_post/1/2/{{ post.author.id }}">{{ post.author.username }} </a></p>
-				<p class = "small">{{ post.timestamp }} </p>
-				<hr>
-				<p class = "content" data-number = "{{ post.id }}" >{{ post.content }}</p>
-				<hr>
-				<p> <span>  {{ likes.0 }} </span>
-					{% if likes.1 %}
+				<div class = col-3>
+					<p class="thick"> <a class = "thick" href="/all_post/1/2/{{ post.author.id }}">{{ post.author.username }} </a></p>
+					<p class = "small">{{ post.timestamp }} </p>
+					<p> <span>  {{ likes.0 }} </span>
+						{% if likes.1 %}
 
-					<button  data-number = "{{ post.id }}" style = "background-color: lightblue;" class = 'likes btn'>  &#128077; </button> 
+						<button  data-number = "{{ post.id }}" style = "background-color: lightblue;" class = 'likes btn'>  &#128077; </button> 
 
-					{% else %}
+						{% else %}
 
-					<button  data-number = "{{ post.id }}" style = "background-color: lightgrey; "class = 'likes btn'>  &#128077; </button> 
+						<button  data-number = "{{ post.id }}" style = "background-color: lightgrey; "class = 'likes btn'>  &#128077; </button> 
 
-					{% endif %}
-			
+						{% endif %}
+				
 
-			
+				
 
-					{% if user.username == post.author.username %}
-						<button class = "btn btn-primary edit"> edit </button>
-					{% else %}
-						
-					{% endif %}
-				</p>				
+						{% if user.username == post.author.username %}
+							<button class = "btn btn-primary edit"> edit </button>
+						{% else %}							
+						{% endif %}
+					</p>
+				</div>
+				<div class = "col">
+					<p class = "content" data-number = "{{ post.id }}" >{{ post.content }}</p>
+				</div>		
 			</div>
 			{% endfor %}
 

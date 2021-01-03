@@ -1,21 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+	main();
+
 	
-
-
-	edit();
-	likes();
-
-	follow();
-
-
-
-
-
-
-
-
-
+	function main ()
+	{
+		edit();
+		likes();
+		follow();
+	}
+	
 
 	function follow(){
 		console.log("follow is running")
@@ -104,25 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
 					disable("edit", false)
 
 
-
-
-
-
-
-
-
-
-
-
 				})
 
-
-
-
-
-
-
-			
+		
 			}
 
 		})
@@ -144,9 +122,9 @@ document.addEventListener('DOMContentLoaded', function() {
 				id = this.getAttribute('data-number');
 				console.log("id: "+ id);
 
-				if (document.querySelector('#userprof') == null) {
-					alert("Login or Register to like this post")
-					return
+				if (document.querySelector('#userprof') === null) {
+					location.replace("/login")
+					
 				}
 				liker = document.querySelector('#userprof').innerHTML
 				//console.log("liker: " + liker);
